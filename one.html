@@ -7,6 +7,14 @@
     <link href="style.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
+    <input type = "text" id = "in">
+    <button onclick="pressed">Submit</button>
     <script src="script.js"></script>
+    <script>
+      function pressed(){
+        var user = document.getElementById("in").text
+        window.alert(user)
+      }
+    </script>
   </body>
 </html>
