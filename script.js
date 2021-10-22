@@ -1,6 +1,6 @@
 var a;
 
-function getItem(){
+function getName(){
         //get value from input field and set to a
         a = document.getElementById("username").value;
         //create local storage key with value of "a"
