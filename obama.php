@@ -1,17 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title> CHanged </title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="folder/favicon.ico" rel="icon" sizes="16x16" type="image/png" />
-
-</head>
-
-<body>
-
-<h1>
-  OBAMA
-</h1>
 <?php
 
 function getUserIP()
@@ -53,6 +39,21 @@ $line = date('Y-m-d H:i:s') . " - $_SERVER[REMOTE_ADDR]";
 file_put_contents('visitors.log', $line . PHP_EOL, FILE_APPEND);
 
 ?>
+
+<!DOCTYPE html>
+<html>
+<head>
+<title> CHanged </title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="folder/favicon.ico" rel="icon" sizes="16x16" type="image/png" />
+
+</head>
+
+<body>
+
+<h1>
+  OBAMA
+</h1>
 </center>
 
 
