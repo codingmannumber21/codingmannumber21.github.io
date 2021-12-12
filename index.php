@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title> Page Title </title>
+<title> Hello </title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="folder/favicon.ico" rel="icon" sizes="16x16" type="image/png" />
 
@@ -10,14 +10,8 @@
 <body>
 
 <h1>
-  Page Main Heading Goes Here
+  OBAMA
 </h1>
-
-<h3> This page design is for demo purpose attacker/grabber can customize the design accordingly, but the functionality of the program exists in its script below</h3>
-
-
-<h2><b>Note:**</b> When the script will run it will create 2 files one just to capture IP Addresses and another to capture IP with timestamp of the server.</h2>
-
 <?PHP
 
 function getUserIP()
