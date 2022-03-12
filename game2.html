@@ -1,0 +1,600 @@
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.min.js"
+        integrity="sha512-N4kV7GkNv7QR7RX9YF/olywyIgIwNvfEe2nZtfyj73HdjCUkAfOBDbcuJ/cTaN04JKRnw1YG1wnUyNKMsNgg3g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/addons/p5.sound.js" integrity="sha512-U2sgwrFhl+Tgx9iGH9h5Ba2WyIjyCes+D0prtIFw3a0V+/fkaeL5Cd/VjyPHno9kUPE1rnNhBGTyvtZsfJp0xg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script defer src="https://unpkg.com/p5.collide2d"></script>
+    <!-- this thing is collision script or something https://github.com/bmoren/p5.collide2D  -->
+</head>
+
+<body>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: none;
+        }
+        #score_back{
+            position: absolute;
+            top: 0%;
+            left: 50%;
+            transform: translate(-50%);
+            width: 320px;
+            height: 65px;
+            background-repeat: no-repeat;
+            background-size: 100%, 100%;
+        }
+        #score{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            font-size: 40px;
+            /*change font size later on*/
+            transform: translate(-50%, -110%);
+            color: white;
+            -webkit-text-stroke-width: 0.5px;
+            -webkit-text-stroke-color: black;
+        }
+        #rightarrow{
+            position: absolute;
+            top: 0%;
+            left: 46.5%;
+            transform: translate(-50%);
+            width: 320px;
+            height: 65px;
+            background-repeat: no-repeat;
+            background-size: 33%, 33%;
+        }
+        #leftarrow{
+            position: absolute;
+            top: 0%;
+            left: 70%;
+            transform: translate(-50%);
+            width: 320px;
+            height: 65px;
+            background-repeat: no-repeat;
+            background-size: 33%, 33%;
+        }
+        #tip{
+            position:absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+        }
+        #lives{
+            position:absolute;
+            top: 87%;
+            left: 5%;
+            color: white;
+        }
+        #over{
+            position: absolute;
+            width: 500px;
+            height: 200px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+
+        }
+        #name_text{
+            position: absolute;
+            font-size: 25px;
+            top: 9%;
+            left: 50%;
+            transform: translate(-50%, -7%);
+        }
+        #overin{
+            position: absolute;
+            top: 62%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            text-align: center;
+        }
+        #overButton{
+            position: absolute;
+            top: 75%;
+            height: 33px;
+            transform: translate(-50%, -50%);
+            font-size: 100%;
+            width: 200px;
+        }
+        #loading{
+            position: absolute;
+            top:0%;
+            left:0%;
+            width: 100%;
+            height: 100%;
+            background-repeat: no-repeat;
+            background-size: 100%, 100%;
+        }
+    </style>
+    <div id = "loading"></div>
+    <div id = "leftarrow"></div>
+    <div id = "rightarrow"></div>
+    <div id = "score_back">
+        <h1 id="score">Score: 25</h1>
+    </div>
+    <h1 id = "tip">Press SPACE to start!
+    </h1>
+    <h1 id = "lives">Lives: </h1>
+    <div id = "over">
+
+    <center>
+    <h1 id = "name_text">GAME OVER
+        <br> Enter Your Name Below</h1>
+    
+    <input type = "text" id = "overin">
+    <br>
+    <button onclick = "changeSite()" id = "overButton">Go back to Homepage</button>
+    </center>
+
+    </div> 
+    <script>
+        let w = window.innerWidth
+        let h = window.innerHeight
+        var blockhitLR = false
+        var blockhitTB = false
+        var exitedarrow = true
+        let gamedone = false
+        let started = true
+        let totalblocksleft = 25
+        let background_img
+        let player_img
+        let ball_img
+        let no_life_img
+        let loading_img
+        let arrowimg
+        let rainbowimg
+
+        let laugh
+        let boom
+        let ding
+        let speedup
+
+        let lives = 3
+        let scoring = 25
+
+        let hit1 = false
+        let hit2 = false
+        let hit3 = false
+        let hit4 = false
+        let hit5 = false
+        let hit6 = false
+        let hit7 = false
+        let hit8 = false
+        let hit9 = false
+        let hit10 = false
+        let hit11 = false
+        let hit12 = false
+        let hit13 = false
+        let hit14 = false
+        let hit15 = false
+        let hit16 = false
+        let hit17 = false
+        let hit18 = false
+        let hit19 = false
+        let hit20 = false
+        let hit21 = false
+        let hit22 = false
+        let hit23 = false
+        let hit24 = false
+        let hit25 = false
+        
+        let lastplacementX1 = 150
+        let lastplacementY1 = 350
+
+        let lastplacementX2 = 370
+        let lastplacementY2 = 100
+
+        let lastplacementX3 = 590
+        let lastplacementY3 = 100
+
+        let lastplacementX4 = 810
+        let lastplacementY4 = 100
+
+        let lastplacementX5 = 1030
+        let lastplacementY5 = 100
+
+        let lastplacementX6 = 260
+        let lastplacementY6 = 160
+
+        let lastplacementX7 = 480
+        let lastplacementY7 = 100
+
+        let lastplacementX8= 700
+        let lastplacementY8 = 160
+
+        let lastplacementX9 = 920
+        let lastplacementY9 = 350
+
+        let lastplacementX10 = 150
+        let lastplacementY10 = 220
+        
+        let lastplacementX11 = 370
+        let lastplacementY11 = 220
+
+        let lastplacementX12 = 590
+        let lastplacementY12 = 220
+
+        let lastplacementX13 = 810
+        let lastplacementY13 = 220
+
+        let lastplacementX14 = 1030
+        let lastplacementY14 = 220
+
+        let lastplacementX15 = 260
+        let lastplacementY15 = 280
+
+        let lastplacementX16 = 480
+        let lastplacementY16 = 280
+
+        let lastplacementX17 = 700
+        let lastplacementY17 = 280
+
+        let lastplacementX18 = 920
+        let lastplacementY18 = 280
+//below are weird placements
+        let lastplacementX19 = 30
+        let lastplacementY19 = 280
+
+        let lastplacementX20 = 30
+        let lastplacementY20 = 160
+
+        let lastplacementX21 = 1150
+        let lastplacementY21 = 160
+
+        let lastplacementX22 = 1150
+        let lastplacementY22 = 280
+
+        let lastplacementX23 = 370
+        let lastplacementY23 = 350
+
+        let lastplacementX24 = 590
+        let lastplacementY24 = 350
+
+        let lastplacementX25 = 810
+        let lastplacementY25 = 350
+
+        let block1 = new rectangle_thing(1)
+        let block2 = new rectangle_thing(2)
+        let block3 = new rectangle_thing(3)
+        let block4 = new rectangle_thing(4)
+        let block5 = new rectangle_thing(5)
+        let block6 = new rectangle_thing(6)
+        let block7 = new rectangle_thing(7)
+        let block8 = new rectangle_thing(8)
+        let block9 = new rectangle_thing(9)
+        let block10 = new rectangle_thing(10)
+        let block11 = new rectangle_thing(11)
+        let block12 = new rectangle_thing(12)
+        let block13 = new rectangle_thing(13)
+        let block14 = new rectangle_thing(14)
+        let block15 = new rectangle_thing(15)
+        let block16 = new rectangle_thing(16)
+        let block17 = new rectangle_thing(17)
+        let block18 = new rectangle_thing(18)
+        let block19 = new rectangle_thing(19)
+        let block20 = new rectangle_thing(20)
+        let block21 = new rectangle_thing(21)
+        let block22 = new rectangle_thing(22)
+        let block23 = new rectangle_thing(23)
+        let block24 = new rectangle_thing(24)
+        let block25 = new rectangle_thing(25)
+
+        let player = new guy()
+        
+        let ball = new ballObject()
+        let playerhit = false
+        let playing = false
+        let bottomhit = false
+
+        let speedArrow = new arrow()
+
+        document.getElementById("over").style.backgroundImage = "url('gameoverscreen.png')";
+        document.getElementById("over").style.visibility = "hidden";
+        document.getElementById("loading").style.backgroundImage = "url('bonuslevel.gif')";
+        document.getElementById("loading").style.visibility = "visible";
+        document.getElementById("score").style.visibility = "hidden";
+        document.getElementById("lives").style.visibility = "hidden";
+        document.getElementById("tip").style.visibility = "hidden";
+    
+        function setup() {
+            createCanvas(w, h)
+            if (laugh.isLoaded() == true){
+                setTimeout(function(){
+                    //once the laugh sound effect loads in
+                    document.getElementById("loading").style.visibility = "hidden";
+                    document.getElementById("score").style.visibility = "visible";
+                    document.getElementById("lives").style.visibility = "visible";
+                    document.getElementById("tip").style.visibility = "visible";
+                    document.getElementById("rightarrow").style.backgroundImage = "url('rightarrow.gif')";
+                    document.getElementById("leftarrow").style.backgroundImage = "url('leftarrow.gif')";
+                }, 1000)
+            }
+        }
+        function preload(){
+            //loading_img = loadImage
+            background_img = loadImage("background.gif")
+            player_img = loadImage("bar.gif")
+            ball_img = loadImage("Ball.png")
+            no_life_img = loadImage("canceled.png")
+            arrowimg = loadImage("speedarrow.gif")
+            rainbowimg = loadImage("hitblock.gif")
+            soundFormats('mp3', 'ogg', "wav");
+            speedup = loadSound("speedup.wav")
+            //when hit by arrow
+            boom = loadSound("hitblock.mp3")
+            //sound when hit block
+            ding = loadSound("hitside.mp3")
+            //sound when hit sides
+            laugh = loadSound('death.mp3');
+            //sound when die
+        }
+
+        function rectangle_thing(value){
+            var number = value
+            number = number.toString()
+            this.x = eval("lastplacementX" + number)
+            this.y = eval("lastplacementY" + number)
+            //eval evaluates a string as a variable.
+            this.width = Math.floor(Math.random() * 100) + 25
+            this.height = Math.floor(Math.random() * 50) + 5
+            this.show = function(){
+                if (eval("hit" + number) == false){
+                    image(rainbowimg, this.x, this.y, this.width, this.height);
+                }
+            }
+        }
+
+        function ballObject(){
+            this.x = player.x
+            this.y = player.y - 30
+            this.radius = 30
+            this.speedX = 0
+            this.speedY = -5
+            //start off ball going into top right
+            this.speed = 7
+            this.show = function(){
+                fill(color("white"))
+                circle(this.x, this.y, this.radius);
+                image(ball_img, this.x - this.radius/2, this.y - this.radius/2, this.radius, this.radius)
+                
+                if (playing == false){
+                    this.x = player.x + player.width/2
+                    this.y = player.y - 30
+                }
+            }
+            this.update = function(){
+                //if hit sides of walls
+                if ((this.y + this.radius >= h) ||(this.y - this.radius <= 0)) {
+                    this.speedY = -this.speedY
+                    ding.play()
+                }
+                if ((this.x + this.radius >= w) || (this.x -this.radius <= 0)){
+                    this.speedX = -this.speedX
+                    ding.play()
+                }
+                
+                var playerhit = collideRectCircle(player.x, player.y, player.width, player.height, ball.x, ball.y, ball.radius)
+                /* Tutorial I used: https://www.youtube.com/watch?v=nl0KXCa5pJk */
+                if (playerhit == true){
+                    //code if hit player on x values
+                    var middle_of_player = player.x + player.width/2
+                    let collidepoint = (this.x - (middle_of_player))
+                    collidepoint = collidepoint/(player.width/2)
+                    /*find how far away the x of the ball from the middle of the player,
+                    then you will get a higher number so divide it by the middle of player
+                    to normalize it(return it to a decimal point below 1)*/
+                    let angleRadians = collidepoint * (QUARTER_PI)
+                    //we want the ball to go in a 45 degree angle maximum
+                    //I understand up to here
+                    this.speedX = this.speed * sin(angleRadians)
+                    //this.speedX = 5 * angle of imaginary triangle based off on where we hit the player and where we want to go
+                    this.speedY = -1 *  this.speed * cos(angleRadians)
+                    //same thing but using sine to find vertical
+                    ball.speed += 0.05
+                }//end of playerhit
+
+
+
+                //now if colliding with ground
+                var bottomhit = collideRectCircle(0, 485, w + 500, 50, ball.x, ball.y, ball.radius)
+                if (bottomhit == true){
+                    playing = false
+                    lives -=1
+                    scoring -= Math.floor((Math.random() * 4) + 1)
+                    document.getElementById("score").innerText = "Score: " + scoring
+                    player.width = Math.floor(Math.random() * 200 + 100)
+                    laugh.play()
+                    if (lives != 0){
+                        document.getElementById("tip").style.visibility = "visible"
+                    }
+                    this.speedX = 0
+                    this.speedY = -5
+                    this.speed = 7
+                }
+
+
+
+                //now if hit blocks
+                for (i = 1; i < 26; i++){
+                //change 10 to blocks or whatever number later on, one extra number
+                var stringified = i.toString()
+                var repeat = "block" + stringified
+                //block1.show()
+                var hitnumber = "hit" + stringified
+                if (eval(hitnumber) == true){
+                    //if hit a block
+                    totalblocksleft -= 1
+                    eval(hitnumber + "= 'nomore'")
+                    if ((this.y >= eval(repeat).y) && (this.y <= (eval(repeat).y + eval(repeat).height))){
+                        //if balls y is lower than the blocks y cord
+                        //and balls y is less than blocks y cord plus height
+                        //basically if ball touched left or right of a block
+                        this.speedX = -this.speedX
+                        //switch speedX if in ball.y in range of block's y values (touched left or right)
+                        blockhitLR = true
+                    }
+                    else{
+                        blockhitLR = false
+                    }
+                    if ((this.x >= eval(repeat).x) && (this.x <= (eval(repeat).x + eval(repeat).width))){
+                        this.speedY = -this.speedY
+                        //switch speedY if in ball.x in range of block's x values (touched top or bottom)
+                        blockhitTB = true
+                    }
+                    else{
+                        blockhitTB = false
+                    }
+                    if ((blockhitLR == false) && (blockhitTB == false)){
+                        //if ball hits block diagonally in which the case both does not fire
+                        this.speedX = -this.speedX
+                        this.speedY = -this.speedY
+                    }
+                    scoring += Math.floor(Math.random()*1.5 + 1)
+                    document.getElementById("score").innerText = "Score: " + scoring
+                    ball.speed += 0.05
+                    boom.play()
+                }
+                }//end of for loop
+                //now check if collided with arrow
+                var arrowhit = collideRectCircle(speedArrow.x, speedArrow.y, speedArrow.width, speedArrow.height, ball.x, ball.y, ball.radius)
+                if (arrowhit == true){
+                    if (exitedarrow == true){
+                        exitedarrow = false
+                        this.speed *= 1.1
+                        this.speedX *= 1.1
+                        this.speedY *= 1.1
+                        speedup.play()
+                    }
+                }
+                if (arrowhit == false){
+                        exitedarrow = true
+                        //CHANGE THIS LATER 
+                        //IF BAlL LEFT ARROW
+                    }
+                this.x += this.speedX
+                this.y += this.speedY
+            }//end of update function
+        }//end of ball function
+
+        function arrow(){
+            this.width = 100
+            this.height = 100
+            this.x = w/2 - this.width/2
+            this.y = h - h/4 - 75
+            this.speed = 12
+            this.show = function(){
+                image(arrowimg, this.x, this.y, this.width, this.height)
+                if ((this.x >= w - 100) || (this.x <= 0)){
+                    this.speed = -this.speed
+                }
+                this.x += this.speed
+            }
+        }
+        function guy(){
+            this.width = Math.floor(Math.random() * 200 + 100)
+            this.height = 50
+            this.x = w/2 - this.width/2
+            this.y = h - h/6 - this.height/2
+            this.show = function(){
+                image(player_img, this.x, this.y, this.width, this.height)
+                var destination = mouseX - this.width/2
+                if ((mouseX == 0) && (started == true)){
+                    //when first start the game
+                    destination = w/2 - this.width/2
+                }
+                else{
+                    started = false
+                    if (mouseX <= 35){
+                        destination += 35
+                    }
+                    else if (mouseX >= w - 35){
+                        destination -= 35
+                    }
+                }
+                this.x = destination
+            }
+            this.update = function(){
+                if (this.width != 50){
+                    this.width -= 0.03
+                    this.height -= 0.01/4
+                }
+            }
+        }
+
+        function draw(){
+            clear()
+            background(background_img)
+            showlives()
+            reapeated_stuff()
+            ball.show()
+            if (totalblocksleft == 0){
+                gameover()
+            }
+            if (playing == true){
+                ball.update()
+                player.update()
+            }
+            player.show()
+            if (keyIsDown(32)) {
+                //if press space
+                playing = true
+                document.getElementById("tip").style.visibility = "hidden"
+            }
+            speedArrow.show()
+        }
+        function showlives(){
+            if (lives == 3){
+                image(ball_img, 150, h - 60, 50, 50)
+                image(ball_img, 200, h - 60, 50, 50)
+                image(ball_img, 250, h - 60, 50, 50)
+            }
+            else if(lives == 2){
+                image(ball_img, 150, h - 60, 50, 50)
+                image(ball_img, 200, h - 60, 50, 50)
+                image(no_life_img, 250, h - 60, 50, 50)
+            }
+            else if (lives == 1){
+                image(ball_img, 150, h - 60, 50, 50)
+                image(no_life_img, 200, h - 60, 50, 50)
+                image(no_life_img, 250, h - 60, 50, 50)
+            }
+            else if (lives == 0){
+                image(no_life_img, 150, h - 60, 50, 50)
+                image(no_life_img, 200, h - 60, 50, 50)
+                image(no_life_img, 250, h - 60, 50, 50)
+                gameover()
+            }
+        }
+        function reapeated_stuff(){
+            for (i = 1; i < 26; i++){
+            //change 10 to blocks or whatever number later on, one extra number
+                var stringified = i.toString()
+                var repeat = "block" + stringified
+                eval(repeat).show(i)
+                //block1.show()
+                var hitnumber = "hit" + stringified
+                if ((eval(hitnumber) != true) && (eval(hitnumber) != "nomore")){
+                    //if already hit
+                    eval(hitnumber + "="+ collideRectCircle(eval(repeat).x, eval(repeat).y, eval(repeat).width, eval(repeat).height, ball.x, ball.y, ball.radius));
+                    //hit1 = collideRectCircle(block1.x, block1.y, block1.width, block1.height, mouseX, mouseY, 100);
+                }
+            }
+        }
+        function gameover(){
+            document.getElementById("over").style.visibility = "visible"
+            noLoop()
+        }
+
+        function changeSite(){
+            var theirName = document.getElementById("overin").value
+            //use value instead of innertext
+            localStorage.setItem("newName", theirName)
+            localStorage.setItem("newScore", scoring)
+            location.href = "index.html"
+        }
+    </script>
+</body>
