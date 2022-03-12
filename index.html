@@ -1,83 +1,247 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>404 Not Found</title>
-  <style type="text/css">
-  	.page {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    min-height: 100vh;
-		}
-	.main {
-    -webkit-box-flex: 1;
-    -ms-flex: 1 1 70%;
-    flex: 1 1 70%;
-    box-sizing: border-box;
-    padding: 10rem 5rem 5rem;
-    min-height: 100vh;
-		}
-	.error-code {
-    color: #f47755;
-    font-size: 8rem;
-    line-height: 1;
-		}
-	p.lead {
-    font-size: 1.6rem;
-    color: #4f5a64;
-		}
-  </style>
 </head>
-<body>
-<div class="page">
-  <div class="main">
-    <h1>Server Error</h1>
-    <div class="error-code">404</div>
-    <h2>Page Not Found</h2>
-    <p class="lead">This page either doesn't exist, or it moved somewhere else.</p>
-    <hr/>
-</div>
-<?php
 
-function getUserIP()
-{
-    $client  = @$_SERVER['HTTP_CLIENT_IP'];
-    $forward = @$_SERVER['HTTP_X_FORWARDED_FOR'];
-    $remote  = $_SERVER['REMOTE_ADDR'];
+<body onload="checkup()">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: none;
+        }
 
-    if(filter_var($client, FILTER_VALIDATE_IP))
-    {
-        $ip = $client;
-    }
-    elseif(filter_var($forward, FILTER_VALIDATE_IP))
-    {
-        $ip = $forward;
-    }
-    else
-    {
-        $ip = $remote;
-    }
+        #list {
+            position: absolute;
+            transform: translate(-50%, -50%);
+            left: 65%;
+            top: 48%;
+            list-style-type: none; /* Remove bullets */
+        }
+        li {
+            left: 50%;
+            position: relative;
+            margin-top: 65px;
+            font-size: 30px;
+        }
 
-    return $ip;
-}
+        #Startbutton{
+            position: absolute;
+            transform: translate(-50%, -50%);
+            left: 27%;
+            top: 85%;
+            width: 300px;
+            height: 75px;
+            font-size: 30px;
+            background-image: url("Startbutton.png");
+        }
+        body{
+            background-repeat: no-repeat;
+            background-size: 100%, 100%;
+        }
+    </style>
+    <button onclick="started()" id = "Startbutton"> Start Game</button>
+    <ul id="list">
+        <li id="one">
+            Loading... score Loading...
+        </li>
+        <li id="two">
+            Loading... score Loading...
+        </li>
+        <li id="three">
+            Loading... score Loading...
+        </li>
+        <li id="four">
+            Loading... score Loading...
+        </li>
+        <li id="five">
+            Loading... score Loading...
+        </li>
+    </ul>
+    <script>
+        document.body.style.backgroundImage = "url('titleScreen.png')";
+        let w = window.innerWidth
+        let h = window.innerHeight
+        //declare an object
+        let global_array = ["one", "two", "three", "four", "five"]
 
+        let firstScore = localStorage.getItem("1score")
+        firstScore = parseInt(firstScore)
+        let firstName = localStorage.getItem("1name")
+        if (isNaN(firstScore) == true){
+            firstScore = 0
+            firstName = ""
+        }
 
-$user_ip = getUserIP();
+        let secondScore = localStorage.getItem("2score")
+        secondScore = parseInt(secondScore)
+        let secondName = localStorage.getItem("2name")
+        if (isNaN(secondScore) == true){
+            secondScore = 0
+            secondName = ""
+        }
 
-echo $user_ip;
+        let thirdScore = localStorage.getItem("3score")
+        thirdScore = parseInt(thirdScore)
+        let thirdName = localStorage.getItem("3name")
+        if (isNaN(thirdScore) == true){
+            thirdScore = 0
+            thirdName = ""
+        }
 
-$fp = fopen('info.txt', 'a');
+        let fourthScore = localStorage.getItem("4score")
+        fourthScore = parseInt(fourthScore)
+        let fourthName = localStorage.getItem("4name")
+        if (isNaN(fourthScore) == true){
+            fourthScore = 0
+            fourthName = ""
+        }
 
-fwrite($fp, $user_ip);
+        let fifthScore = localStorage.getItem("5score")
+        fifthScore = parseInt(fifthScore)
+        let fifthName = localStorage.getItem("5name")
+        if (isNaN(fifthScore) == true){
+            fifthScore = 0
+            fifthName = ""
+        }
 
-fclose($fp);
+        var newName = localStorage.getItem("newName")
+        newName = newName.substring(0, Math.min(newName.length, 10));
+        //remove letters from newName using substring, 0 character up to lowest character from newName of 10 characters
+        //basically newName can be 10 or lower characters
+        localStorage.removeItem("newName")
+        localStorage.setItem("newName", newName)
+        var newScore = localStorage.getItem("newScore")
 
-$line = date('Y-m-d H:i:s') . " - $_SERVER[REMOTE_ADDR]";
-file_put_contents('visitors.log', $line . PHP_EOL, FILE_APPEND);
+        function checkup() {
+            //NEW PROBLEM IS IF RELOAD THEN IT THINKS IT PLAYED THE GAME
+            newScore = parseInt(newScore)
+            if (newName == null) {
+                placenames()
+            }
+            if (newScore == null) {
+                placenames()
+            }
+            //use isNaN on the above functions, fifthscore works.
+            if (newScore >= fifthScore) {
+                if (newScore >= fourthScore) {
+                    if (newScore >= thirdScore) {
+                        if (newScore >= secondScore) {
+                            if (newScore >= firstScore) {
+                                redo(1)
+                            }
+                            else {
+                                redo(2)
+                            }
+                        }
+                        else {
+                            redo(3)
+                        }
+                    }
+                    else {
+                        redo(4)
+                    }
+                }
+                else {
+                    redo(5)
+                }
+            }
+            else {
+                placenames()
+            }
+        }
+        function redo(value){
+            for (i = 1; i < 6; i++){
+                console.log(i, "first")
+                var repeatname2 = i.toString() + "name2"
+                var repeatscore2 = i.toString() + "score2"
+                localStorage.removeItem(repeatname2)
+                localStorage.removeItem(repeatscore2)
+            }
+            var placing = value
+            //which new placement the new score should be at
+            var belowplacing = value + 1
+            //scores below the new value
+            //function below is not broken
+            for (i = placing; i < 6; i += 1){
+                /*THIS MOVES ALL LOCAL STORAGE VALUES TO A SECOND STORAGE 
+                EXCEPT FOR THE NUMBERS ABOVE THE NEW SCORE*/
+                console.log(placing)
+                var localname = i.toString() + "name"
+                var localscore = i.toString() + "score"
+                //get 1name and 1score
+                var localnamevalue = localStorage.getItem(localname)
+                var localscorevalue = localStorage.getItem(localscore)
+                //get the values of 1name and 1score
+                var localname2 = i.toString() + "name2"
+                var localscore2 = i.toString() + "score2"
+                //put them in a different storage with 2 at the end
+                localStorage.setItem(localname2, localnamevalue)
+                localStorage.setItem(localscore2, localscorevalue)
+                //set values into extra key
+                localStorage.removeItem(localname)
+                localStorage.removeItem(localscore)
+                //remove old storage
+            } //below for loop is not broken
+            for(i = placing; i < 6; i++){
+                //if placing would equal 3
+                var remakeposition = placing + 1
 
-?>
+                var localname2 = i.toString() + "name2"
+                var localscore2 = i.toString() + "score2"
+                //if localname2 == 5name2
+                console.log(localname2)
+                console.log(localscore2)
+                var repositionName = localStorage.getItem(localname2)
+                var repositionScore = localStorage.getItem(localscore2)
+                console.log(repositionName)
+                console.log(repositionScore)
+                localStorage.removeItem(localname2)
+                localStorage.removeItem(localscore2)
+                //remove numbers after copying to variable
+
+                var localname = ((i + 1).toString()) + "name"
+                var localscore = ((i + 1).toString()) + "score"
+                //SHIFT EVERYTHING DOWN ONE
+                if (localname != "6name"){
+                    //if going to have 6name then dont accept
+                    localStorage.setItem(localname, repositionName)
+                    localStorage.setItem(localscore, repositionScore)
+                    //everything has been shifted down one
+                }
+                //there should be an empty spot for the new score and name after this
+            }
+            var placedname = placing.toString() + "name"
+            var placedscore = placing.toString() + "score"
+            localStorage.setItem(placedname, newName)
+            localStorage.setItem(placedscore, newScore)
+            placenames()
+            localStorage.removeItem("newName")
+            localStorage.removeItem("newScore")
+        }
+        function started() {
+            localStorage.removeItem("newName")
+            localStorage.removeItem("newScore")
+            location.href = "game.html"
+        }
+        function placenames(){
+            for (i = 0; i < 5; i++){
+                //RESET TEXT ON PAGE BASED OFF LOCAL STORAGE
+                var array_index = i
+                //everything is shifted -1 on array
+                var element = global_array[array_index]
+                //get the id of the element
+                var redoname = ((i + 1).toString()) + "name"
+                var redoscore = ((i + 1).toString()) + "score"
+                var redonename = localStorage.getItem(redoname)
+                var redonescore = localStorage.getItem(redoscore)
+                console.log(typeof(redonename))
+                if ((redonename == null) || (redonename == "null")){
+                    redonename = "Empty"
+                }
+                if ((redonescore == null) || (redonescore == "null")){
+                    redonescore = "Empty"
+                }
+                document.getElementById(element).innerText = redonename + " Score: " + redonescore
+            }
+        }
+    </script>
 </body>
-AddType application/x-httpd-php .html .htm
